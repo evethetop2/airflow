@@ -5,7 +5,10 @@ from airflow.models.dag import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
-from plugins.common.common_func import get_sftp
+#로컬에선 이렇게
+#from plugins.common.common_func import get_sftp
+#에어플로우는 이렇게
+from common.common_func import get_sftp
 
 # dag이름은 dag_id, 파이썬 파일명이랑 일치시켜
 with DAG(
