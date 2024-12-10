@@ -25,7 +25,7 @@ with DAG(
         print(fruit[rand_int])
 
     py_t1 = PythonOperator(
-        task_id = py_t1,
+        task_id = 'py_t1',
         python_callable=select_fruit
     )
     
