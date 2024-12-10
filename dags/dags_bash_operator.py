@@ -31,5 +31,4 @@ with DAG(
         #호스트네임 출력하라
         bash_command="echo $HOSTNAME",
     ) 
-
     bash_t1 >> bash_t2
