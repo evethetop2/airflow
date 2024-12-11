@@ -1,15 +1,10 @@
-from __future__ import annotations
-import datetime
-import pendulum
 from airflow.models.dag import DAG
-from airflow.operators.bash import BashOperator
-from airflow.operators.empty import EmptyOperator
+import pendulum
 from airflow.operators.python import PythonOperator
-from common.common_func import get_sftp
+from common.common_regist import regist2
 
-# dag이름은 dag_id, 파이썬 파일명이랑 일치시켜
 with DAG(
-    dag_id="dags_python_import_func",
+    dag_id="dags_python_with_op_args",
     #시간임
     schedule="30 6 * * *",
     start_date=pendulum.datetime(2023, 1, 1, tz="Asia/Seoul"),
@@ -19,8 +14,12 @@ with DAG(
     # tags=["example", "example2"],
     # params={"example_key": "example_value"},
 ) as dag:
-     task_get_sftp = PythonOperator( 
-        task_id = 'task_get_sftp',
-        python_callable=get_sftp
+    regist2_t1 = PythonOperator(
+        task_id = 'regist2_t1',
+        python_callable=regist2,
+        ##여기가 중요
+        op_args=['hkpark','man','kr','seoul'],
+        op_kwargs={'email':'dsad@naver.com', 'phone':'119'}
     )
-     task_get_sftp
+
+    regist2_t1

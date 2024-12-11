@@ -17,6 +17,7 @@ with DAG(
     regist_t1 = PythonOperator(
         task_id = 'regist_t1',
         python_callable=regist,
+        ##여기가 중요
         op_args=['hkpark','man','kr','seoul']
     )
 
