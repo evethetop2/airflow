@@ -21,10 +21,10 @@ def process_dataframe(**kwargs):
     df_json = kwargs['ti'].xcom_pull(key='df', task_ids='read_table_task')
 
     # JSON을 다시 DataFrame으로 변환
-    # df = pd.read_json(df_json, orient='split')
+    df = pd.read_json(df_json, orient='split')
     df_json[['id', 'user_name']] = df_json['value'].apply(lambda x: pd.Series(json.loads(x)))
     df_json.drop('value', axis=1, inplace=True)
-    # df_json['dt'] = pd.to_datetime(df_json['dt'], format='%Y/%m/%d')
+    df_json['dt'] = df_json['dt'].astype(str)
 
     print("Received DataFrame:")
     print(df_json)
