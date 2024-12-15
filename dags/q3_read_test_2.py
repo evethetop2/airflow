@@ -13,23 +13,19 @@ def convert_timestamp(ts):
 
 
 def check_previous_date_exists(**kwargs):
-    """
-    이전 날짜가 존재하는지 확인하고,
-    존재하지 않으면 AirflowSkipException을 발생시킴.
-    """
-    # 연결 정보로 MySQL 연결
+    # MySQL 연결
     mysql_hook = MySqlHook(mysql_conn_id='hyperconnect')
 
     # 쿼리 실행: 2024/12/8일 이전 날짜가 존재하는지 확인
     flag = """
-    SELECT COUNT(*) FROM table_a WHERE dt <= '2024-11-08';
+    SELECT COUNT(*) FROM table_a WHERE dt <= '2024-12-08';
     """
     result = mysql_hook.get_first(flag)
     
     # 결과가 0이면 이전 날짜가 존재하지 않음
     if result[0] == 0:
         print("이전 날짜가 존재하지 않습니다.")
-        raise AirflowSkipException("이전 날짜가 존재하지 않으므로 작업을 건너뜁니다.")
+        raise AirflowSkipException()
     else:
         print("이전 날짜가 존재합니다.")
         query = "SELECT * FROM table_a"
@@ -51,7 +47,7 @@ def insert_data_to_table_b(**kwargs):
     df['dt'] = df['dt'].apply(convert_timestamp)
     print(df)
     
-
+    #insert를 위한 객체 생성
     mysql_hook = MySqlHook(mysql_conn_id='hyperconnect')
     conn = mysql_hook.get_conn()  # 연결 객체 가져오기
     cursor = conn.cursor()  # 커서 객체 생성
@@ -64,13 +60,9 @@ def insert_data_to_table_b(**kwargs):
         """
         cursor.execute(insert_query, (row['dt'], row['hr'], row['id'], row['user_name']))
 
-    # print("데이터가 MySQL에 삽입되었습니다.")
+    print("데이터가 정상적으로 삽입되었습니다.")
 
 def wait_for_previous_date(**kwargs):
-    """
-    PythonSensor로 이전 날짜가 존재하는지 확인하는 함수.
-    만약 날짜가 없다면 작업을 건너뛰게 함.
-    """
     try:
         check_previous_date_exists(**kwargs)
         return True
@@ -80,8 +72,8 @@ def wait_for_previous_date(**kwargs):
 # DAG 정의
 dag = DAG(
     'check_and_insert_data',
-    start_date=datetime(2024, 12, 8, 10, 0),  # 실행 날짜 설정 (한국시간 오전 10시)
-    schedule_interval=None,  # 수동 실행
+    start_date=datetime(2024, 12, 8, 10, 0), 
+    schedule="0 10 * * *"
     catchup=False
 )
 
@@ -92,14 +84,12 @@ check_date_sensor = PythonSensor(
     poke_interval=10,
     timeout=60,
     mode='poke',  # 계속해서 확인하는 방식
-    dag=dag
 )
 
 # PythonOperator: 데이터를 삽입하는 작업
 insert_data = PythonOperator(
     task_id='insert_data_to_table_b',
     python_callable=insert_data_to_table_b,
-    dag=dag
 )
 
 # 작업 순서: 날짜가 존재하면 insert 작업 실행, 존재하지 않으면 skip
