@@ -88,8 +88,7 @@ check_date_sensor = PythonSensor(
     poke_interval=10,
     timeout=60,
     mode='poke',  # 계속해서 확인하는 방식
-    poke_until=True,  # 원하는 날짜가 있을 때까지 계속 확인
-    provide_context=True,
+    provide_context=True,  # 이 옵션은 PythonSensor에서 기본적으로 True이므로 제거할 필요 없음
     dag=dag
 )
 
