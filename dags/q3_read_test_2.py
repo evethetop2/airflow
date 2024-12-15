@@ -51,6 +51,10 @@ def insert_data_to_table_b(**kwargs):
     df['dt'] = df['dt'].apply(convert_timestamp)
     print(df)
     
+
+    mysql_hook = MySqlHook(mysql_conn_id='hyperconnect')
+    conn = mysql_hook.get_conn()  # 연결 객체 가져오기
+    cursor = conn.cursor()  # 커서 객체 생성
     
     # 데이터를 table B에 삽입
     for i, row in df.iterrows():
@@ -58,7 +62,7 @@ def insert_data_to_table_b(**kwargs):
         INSERT INTO table_b (dt, hr, id, user_name)
         VALUES (%s, %s, %s, %s)
         """
-        MySqlHook.run(insert_query, parameters=(row['dt'], row['hr'], row['id'], row['user_name']))
+        cursor.execute(insert_query, (row['dt'], row['hr'], row['id'], row['user_name']))
 
     # print("데이터가 MySQL에 삽입되었습니다.")
 
