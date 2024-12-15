@@ -3,6 +3,7 @@ from airflow.operators.python import PythonOperator
 from sqlalchemy import create_engine
 import pandas as pd
 from datetime import datetime
+import pymysql
 
 # 기본 설정
 default_args = {
