@@ -22,7 +22,7 @@ def check_previous_date_exists(**kwargs):
 
     # 쿼리 실행: 2024/12/8일 이전 날짜가 존재하는지 확인
     flag = """
-    SELECT COUNT(*) FROM table_a WHERE dt <= '2024-12-08';
+    SELECT COUNT(*) FROM table_a WHERE dt <= '2024-11-08';
     """
     result = mysql_hook.get_first(flag)
     
