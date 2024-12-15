@@ -7,7 +7,7 @@ import json
 from datetime import datetime, timezone
 
 def convert_timestamp(ts):
-    return datetime.fromtimestamp(ts / 1000, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.fromtimestamp(ts / 1000, tz=timezone.utc).strftime('%Y-%m-%d')
 
 
 def read_table(**kwargs):
