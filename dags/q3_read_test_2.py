@@ -18,7 +18,7 @@ def check_previous_date_exists(**kwargs):
 
     # 쿼리 실행: 2024/12/8일 이전 날짜가 존재하는지 확인
     flag = """
-    SELECT COUNT(*) FROM table_a WHERE dt <= '2024-12-08';
+    SELECT COUNT(*) FROM table_a WHERE dt <= '2023-01-01';
     """
     result = mysql_hook.get_first(flag)
     
@@ -49,8 +49,8 @@ def insert_data_to_table_b(**kwargs):
     
     #insert를 위한 객체 생성
     mysql_hook = MySqlHook(mysql_conn_id='hyperconnect')
-    conn = mysql_hook.get_conn()  # 연결 객체 가져오기
-    cursor = conn.cursor()  # 커서 객체 생성
+    conn = mysql_hook.get_conn() 
+    cursor = conn.cursor()
     
     # 데이터를 table B에 삽입
     for i, row in df.iterrows():
