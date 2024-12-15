@@ -53,12 +53,12 @@ def insert_data_to_table_b(**kwargs):
     
     
     # 데이터를 table B에 삽입
-    # for row in df.iterrows():
-    #     insert_query = """
-    #     INSERT INTO table_b (dt, hr, id, user_name)
-    #     VALUES (%s, %s, %s, %s)
-    #     """
-    #     MySqlHook.run(insert_query, parameters=(row['dt'], row['hr'], row['id'], row['user_name']))
+    for i, row in df.iterrows():
+        insert_query = """
+        INSERT INTO table_b (dt, hr, id, user_name)
+        VALUES (%s, %s, %s, %s)
+        """
+        MySqlHook.run(insert_query, parameters=(row['dt'], row['hr'], row['id'], row['user_name']))
 
     # print("데이터가 MySQL에 삽입되었습니다.")
 
