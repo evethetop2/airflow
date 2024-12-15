@@ -88,7 +88,6 @@ check_date_sensor = PythonSensor(
     poke_interval=10,
     timeout=60,
     mode='poke',  # 계속해서 확인하는 방식
-    provide_context=True,  # 이 옵션은 PythonSensor에서 기본적으로 True이므로 제거할 필요 없음
     dag=dag
 )
 
@@ -96,7 +95,6 @@ check_date_sensor = PythonSensor(
 insert_data = PythonOperator(
     task_id='insert_data_to_table_b',
     python_callable=insert_data_to_table_b,
-    provide_context=True,
     dag=dag
 )
 
