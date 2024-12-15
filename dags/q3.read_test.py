@@ -13,7 +13,7 @@ default_args = {
 
 def read_mysql_table_with_sqlalchemy(**kwargs):
     # SQLAlchemy 연결 URL 형식
-    connection_string = "mysql+pymysql://hyperconnect_1:gksdud12@your_host:3306/hyperconnect"
+    connection_string = "mysql+pymysql://hyperconnect_1:gksdud12@183.96.150.41:3306/hyperconnect"
     
     # SQLAlchemy 엔진 생성
     engine = create_engine(connection_string)
