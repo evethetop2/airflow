@@ -37,7 +37,7 @@ def check_previous_date_exists(**kwargs):
         df = pd.DataFrame(result, columns=['dt','hr','value'])
         kwargs['ti'].xcom_push(key='df', value=df.to_json(orient='split'))
         print("DataFrame has been pushed to XCom")
-        return df
+        print(df)
 
 
 def insert_data_to_table_b(**kwargs):
@@ -52,14 +52,14 @@ def insert_data_to_table_b(**kwargs):
     
     
     # 데이터를 table B에 삽입
-    for row in df.iterrows():
-        insert_query = """
-        INSERT INTO table_b (dt, hr, id, user_name)
-        VALUES (%s, %s, %s, %s)
-        """
-        MySqlHook.run(insert_query, parameters=(row['dt'], row['hr'], row['id'], row['user_name']))
+    # for row in df.iterrows():
+    #     insert_query = """
+    #     INSERT INTO table_b (dt, hr, id, user_name)
+    #     VALUES (%s, %s, %s, %s)
+    #     """
+    #     MySqlHook.run(insert_query, parameters=(row['dt'], row['hr'], row['id'], row['user_name']))
 
-    print("데이터가 MySQL에 삽입되었습니다.")
+    # print("데이터가 MySQL에 삽입되었습니다.")
 
 def wait_for_previous_date(**kwargs):
     """
