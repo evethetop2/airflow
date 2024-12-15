@@ -24,7 +24,7 @@ def process_dataframe(**kwargs):
     # df = pd.read_json(df_json, orient='split')
     df_json[['id', 'user_name']] = df_json['value'].apply(lambda x: pd.Series(json.loads(x)))
     df_json.drop('value', axis=1, inplace=True)
-    df_json['dt'] = pd.to_datetime(df_json['dt'], format='%Y/%m/%d')
+    # df_json['dt'] = pd.to_datetime(df_json['dt'], format='%Y/%m/%d')
 
     print("Received DataFrame:")
     print(df_json)
