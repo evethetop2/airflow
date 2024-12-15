@@ -77,16 +77,14 @@ dag = DAG(
     catchup=False
 )
 
-# PythonSensor로 이전 날짜가 존재하는지 확인
 check_date_sensor = PythonSensor(
     task_id='check_previous_date_sensor',
     python_callable=wait_for_previous_date,
     poke_interval=10,
     timeout=60,
-    mode='poke',  # 계속해서 확인하는 방식
+    mode='poke'
 )
 
-# PythonOperator: 데이터를 삽입하는 작업
 insert_data = PythonOperator(
     task_id='insert_data_to_table_b',
     python_callable=insert_data_to_table_b,
