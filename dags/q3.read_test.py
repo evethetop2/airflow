@@ -6,7 +6,7 @@ import pandas as pd
 from datetime import datetime
 
 def read_table():
-    mysql_hook = MySqlHook(mysql_conn_id='hyperconnect_1')
+    mysql_hook = MySqlHook(mysql_conn_id='hyperconnect')
     sql = """
     select *
     from table_a
