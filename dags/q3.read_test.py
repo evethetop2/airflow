@@ -4,7 +4,10 @@ from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 import pandas as pd
 import json
-from datetime import datetime
+from datetime import datetime, timezone
+
+def convert_timestamp(ts):
+    return datetime.fromtimestamp(ts / 1000, tz=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
 
 
 def read_table(**kwargs):
@@ -24,7 +27,7 @@ def process_dataframe(**kwargs):
     df = pd.read_json(df_json, orient='split')
     df[['id', 'user_name']] = df['value'].apply(lambda x: pd.Series(json.loads(x)))
     df.drop('value', axis=1, inplace=True)
-    df['dt'] = df['dt'].astype(str)
+    df['dt'] = df['dt'].apply(convert_timestamp)
 
     print("Received DataFrame:")
     print(df)
