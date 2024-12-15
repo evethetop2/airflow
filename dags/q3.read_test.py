@@ -20,7 +20,7 @@ def read_table(**kwargs):
 
 def process_dataframe(**kwargs):
     # XCom에서 DataFrame JSON 가져오기
-    df_json = kwargs['ti'].xcom_pull(key='df', task_ids='read_table')
+    df_json = kwargs['ti'].xcom_pull(key='df', task_ids='read_table_task')
     
     # JSON을 다시 DataFrame으로 변환
     df = pd.read_json(df_json, orient='split')
