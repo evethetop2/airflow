@@ -73,7 +73,7 @@ def wait_for_previous_date(**kwargs):
 dag = DAG(
     'check_and_insert_data',
     start_date=datetime(2024, 12, 8, 10, 0), 
-    schedule="0 10 * * *"
+    schedule="0 10 * * *",
     catchup=False
 )
 
