@@ -37,13 +37,12 @@ def check_previous_date_exists(**kwargs):
         df = pd.DataFrame(result, columns=['dt','hr','value'])
         kwargs['ti'].xcom_push(key='df', value=df.to_json(orient='split'))
         print("DataFrame has been pushed to XCom")
+        return df
 
 
 def insert_data_to_table_b(**kwargs):
-    """
-    table A에서 데이터를 가져와서 table B에 삽입하는 함수.
-    """
-    df_json = kwargs['ti'].xcom_pull(key='df', task_ids='check_previous_date_exists')
+    # XCom에서 DataFrame JSON 가져오기
+    df_json = kwargs['ti'].xcom_pull(key='df', task_ids='check_previous_date_sensor')
 
     # JSON을 다시 DataFrame으로 변환
     df = pd.read_json(df_json, orient='split')
