@@ -7,13 +7,9 @@ from datetime import datetime
 
 def read_table():
     mysql_hook = MySqlHook(mysql_conn_id='hyperconnect')
-    sql = """
-    select *
-    from table_a
-    ;
-    """
-    a= mysql_hook.run(sql)
-    return a
+    query = "SELECT * FROM table_a"
+    df = mysql_hook.get_pandas_df(query)
+    print(df.head())
 
 with DAG(
     dag_id='read_table_using_hook',
