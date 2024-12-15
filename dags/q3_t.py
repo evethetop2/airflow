@@ -73,13 +73,13 @@ with DAG(
 ) as dag:
     t1 = MySqlOperator(
         task_id="create_employees_table",
-        mysql_conn_id="mysql_local_test",
+        mysql_conn_id="hyperconnect",
         sql=sql_create_table,
     )
 
     t2 = MySqlOperator(
         task_id="insert_employees_data",
-        mysql_conn_id="mysql_local_test",
+        mysql_conn_id="hyperconnect",
         sql=sql_insert_data
     )
 
