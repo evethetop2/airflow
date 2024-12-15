@@ -1,9 +1,9 @@
-from datetime import datetime
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.sensors.python import PythonSensor
 from airflow.providers.mysql.hooks.mysql import MySqlHook
 from airflow.exceptions import AirflowSkipException
+import pendulum
 import pandas as pd
 import json
 from datetime import datetime, timezone
@@ -72,7 +72,7 @@ def wait_for_previous_date(**kwargs):
 # DAG 정의
 dag = DAG(
     'check_and_insert',
-    start_date=datetime(2024, 12, 8, 10, 0), 
+    start_date=pendulum.datetime(2024, 12, 1, tz="Asia/Seoul"),
     schedule="0 10 * * *",
     catchup=False
 )
