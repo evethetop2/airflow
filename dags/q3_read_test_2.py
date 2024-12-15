@@ -87,7 +87,7 @@ check_date_sensor = PythonSensor(
 
 insert_data = PythonOperator(
     task_id='insert_data_to_table_b',
-    python_callable=insert_data_to_table_b,
+    python_callable=insert_data_to_table_b
 )
 
 # 작업 순서: 날짜가 존재하면 insert 작업 실행, 존재하지 않으면 skip
