@@ -49,6 +49,7 @@ def insert_data_to_table_b(**kwargs):
     df[['id', 'user_name']] = df['value'].apply(lambda x: pd.Series(json.loads(x)))
     df.drop('value', axis=1, inplace=True)
     df['dt'] = df['dt'].apply(convert_timestamp)
+    print(df)
     
     
     # 데이터를 table B에 삽입
