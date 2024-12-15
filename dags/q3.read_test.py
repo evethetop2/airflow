@@ -12,8 +12,6 @@ def read_table(**kwargs):
     query = "SELECT * FROM table_a"
     result = mysql_hook.get_pandas_df(query)
     df = pd.DataFrame(result, columns=['dt','hr','value'])
-    df[['id', 'user_name']] = df['value'].apply(lambda x: pd.Series(json.loads(x)))
-    df.drop('value', axis=1, inplace=True)
     kwargs['ti'].xcom_push(key='df', value=df.to_json(orient='split'))
     print("DataFrame has been pushed to XCom")
     return df
@@ -21,9 +19,13 @@ def read_table(**kwargs):
 def process_dataframe(**kwargs):
     # XCom에서 DataFrame JSON 가져오기
     df_json = kwargs['ti'].xcom_pull(key='df', task_ids='read_table_task')
-    
+
     # JSON을 다시 DataFrame으로 변환
     df = pd.read_json(df_json, orient='split')
+    df[['id', 'user_name']] = df['value'].apply(lambda x: pd.Series(json.loads(x)))
+    df.drop('value', axis=1, inplace=True)
+    df['dt'] = pd.to_datetime(df['dt'], format='%Y/%m/%d')
+
     print("Received DataFrame:")
     print(df)
 
