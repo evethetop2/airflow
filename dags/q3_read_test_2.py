@@ -71,7 +71,7 @@ def wait_for_previous_date(**kwargs):
 
 # DAG 정의
 dag = DAG(
-    'check_and_insert',
+    'a_to_b',
     start_date=pendulum.datetime(2024, 12, 1, tz="Asia/Seoul"),
     schedule="0 10 * * *",
     catchup=False
