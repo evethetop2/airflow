@@ -7,13 +7,15 @@ import json
 from datetime import datetime
 
 
-def read_table():
+def read_table(**kwargs):
     mysql_hook = MySqlHook(mysql_conn_id='hyperconnect')
     query = "SELECT * FROM table_a"
     result = mysql_hook.get_pandas_df(query)
     df = pd.DataFrame(result, columns=['dt','hr','value'])
     df[['id', 'user_name']] = df['value'].apply(lambda x: pd.Series(json.loads(x)))
     df.drop('value', axis=1, inplace=True)
+    kwargs['ti'].xcom_push(key='df', value=df.to_json(orient='split'))
+    print("DataFrame has been pushed to XCom")
     return df
 
 def process_dataframe(**kwargs):
