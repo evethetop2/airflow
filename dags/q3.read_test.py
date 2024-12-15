@@ -3,13 +3,18 @@ from airflow.providers.mysql.hooks.mysql import MySqlHook
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 import pandas as pd
+import json
 from datetime import datetime
+
 
 def read_table():
     mysql_hook = MySqlHook(mysql_conn_id='hyperconnect')
     query = "SELECT * FROM table_a"
-    df = mysql_hook.get_pandas_df(query)
-    print(df.head())
+    result = mysql_hook.get_pandas_df(query)
+    df = pd.DataFrame(result, columns=['dt','hr','value'])
+    df[['id', 'user_name']] = df['value'].apply(lambda x: pd.Series(json.loads(x)))
+    df.drop('value', axis=1, inplace=True)
+    return df
 
 with DAG(
     dag_id='read_table_using_hook',
