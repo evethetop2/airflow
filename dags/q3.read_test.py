@@ -16,6 +16,16 @@ def read_table():
     df.drop('value', axis=1, inplace=True)
     return df
 
+def process_dataframe(**kwargs):
+    # XCom에서 DataFrame JSON 가져오기
+    df_json = kwargs['ti'].xcom_pull(key='df', task_ids='read_table')
+    
+    # JSON을 다시 DataFrame으로 변환
+    df = pd.read_json(df_json, orient='split')
+    print("Received DataFrame:")
+    print(df)
+
+
 with DAG(
     dag_id='read_table_using_hook',
     start_date=datetime(2024, 1, 1),
@@ -30,4 +40,11 @@ with DAG(
         retry_delay=timedelta(minutes=5),
     )
 
-    read_table_task
+        # Task 2: DataFrame 처리
+    process_dataframe_task = PythonOperator(
+        task_id='process_dataframe_task',
+        python_callable=process_dataframe,
+        provide_context=True
+    )
+
+    read_table_task >> process_dataframe_task
