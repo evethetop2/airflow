@@ -71,7 +71,7 @@ def wait_for_previous_date(**kwargs):
 
 # DAG 정의
 dag = DAG(
-    'check_and_insert_data',
+    'check_and_insert',
     start_date=datetime(2024, 12, 8, 10, 0), 
     schedule="0 10 * * *",
     catchup=False
